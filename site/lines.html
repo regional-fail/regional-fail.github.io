@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Line scorecards · Regional Fail</title>
+  <meta name="description" content="Which SEPTA Regional Rail line is the most reliably unreliable, and which one actually does its job.">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Regional Fail</h1>
+      <p class="tagline">Traffic? lol. Delays? lmao.</p>
+    </div>
+    <nav class="nav"><a href="index.html">Live map</a><a href="lines.html" aria-current="page">Line scorecards</a><a href="#about">How we score</a></nav>
+  </header>
+
+  <div class="filters" role="group" aria-label="Time period">
+    <button type="button" class="seg" data-period="today" aria-pressed="true">Today</button>
+    <button type="button" class="seg" data-period="7d" aria-pressed="false">Last 7 days</button>
+    <button type="button" class="seg" data-period="30d" aria-pressed="false">Last 30 days</button>
+    <span class="filter-note" id="period-note"></span>
+  </div>
+
+  <section class="awards" aria-label="Awards">
+    <article class="award worst">
+      <div class="award-kicker">🏆 Most Reliably Unreliable</div>
+      <div class="award-name" id="worst-name">–</div>
+      <div class="award-grade" id="worst-grade"></div>
+      <p class="award-detail" id="worst-detail"></p>
+    </article>
+    <article class="award best">
+      <div class="award-kicker">🎖️ Actually Does Its Job</div>
+      <div class="award-name" id="best-name">–</div>
+      <div class="award-grade" id="best-grade"></div>
+      <p class="award-detail" id="best-detail"></p>
+    </article>
+  </section>
+
+  <section class="card">
+    <h2>Reliability score by line, worst first</h2>
+    <p class="card-note">0–100, both directions combined. Hover a bar for the breakdown. Lines without enough observed trips are listed separately and aren't ranked.</p>
+    <div id="bars" class="bars" role="list"></div>
+    <div id="unranked" class="unranked"></div>
+    <div id="bar-tip" class="tooltip" role="tooltip" hidden></div>
+  </section>
+
+  <section class="card">
+    <h2>By line and direction</h2>
+    <div class="table-wrap tall">
+      <table id="dir-table">
+        <thead><tr>
+          <th>Line</th><th>Direction</th><th>Trips due</th><th>Ran</th><th>Ghosts 👻</th><th>Unknown</th>
+          <th>On time</th><th>Avg late</th><th>Worst</th><th>Rush-hour on time</th><th>Grade</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer id="about" class="about">
+    <h2>How we score</h2>
+    <p>Each line gets a 0–100 score over the chosen period. Rush-hour trains count double (inbound arriving 6:00–9:30am, outbound leaving 4:00–7:00pm, weekdays):</p>
+    <ul>
+      <li><strong>50%:</strong> share of scheduled trains that actually ran. A ghost train is a total failure.</li>
+      <li><strong>30%:</strong> share of finished trips on time, by SEPTA's own rule (5 minutes late or less at the last stop).</li>
+      <li><strong>20%:</strong> how late trips ran on average, capped at 15 minutes.</li>
+    </ul>
+    <p>Grades: A 90+, B 80+, C 70+, D 60+, F below 60. A line is ranked only with enough observed trips in the period (<span id="min-rank"></span>). Trains we couldn't observe are "unknown" and never counted against SEPTA. Through trains that cross Center City count toward each line they run on.</p>
+    <p>Data: SEPTA's public real-time feeds and published timetable.</p>
+    <p class="fine-print">Schedule data: SEPTA GTFS, used under SEPTA&rsquo;s Trip Planning Data License Agreement. Real-time data: SEPTA&rsquo;s public feeds. All numbers are our own calculations from that data, provided as is. Regional Fail is an independent, non-commercial project and is not affiliated with or endorsed by SEPTA. No SEPTA logos or trademarks are used.</p>
+  </footer>
+
+  <script type="module" src="js/lines.js"></script>
+</body>
+</html>

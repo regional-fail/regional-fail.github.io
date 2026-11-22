@@ -1,0 +1,4 @@
+# Always LF in the repo and working tree: the CI scripts run on Linux, and Windows CRLF breaks bash.
+* text=auto eol=lf
+*.gz binary
+*.png binary

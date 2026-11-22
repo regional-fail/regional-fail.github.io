@@ -1,0 +1,39 @@
+# Every 5 minutes: read SEPTA's live feeds, update today's state, archive finished days.
+# GitHub may start scheduled runs a few minutes late or skip one under load; the logger
+# treats gaps in its own polling as "unknown", never as SEPTA's failure.
+name: Poll SEPTA
+
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Never run two pollers at once (they share the live state); queue instead of cancelling.
+concurrency:
+  group: logger
+  cancel-in-progress: false
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci --omit=dev --no-audit --no-fund
+
+      - name: Poll, archive and publish
+        env:
+          REPO_URL: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # avoids rate limits on SEPTA's GTFS release check
+        run: bash scripts/ci/poll.sh

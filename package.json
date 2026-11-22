@@ -1,0 +1,24 @@
+{
+  "name": "regional-fail",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Traffic? lol. Delays? lmao. A sourced, tongue-in-cheek dashboard of SEPTA Regional Rail reliability.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "gtfs": "node logger/update_gtfs.mjs",
+    "poll": "node logger/poll.mjs",
+    "poll:loop": "node logger/poll_loop.mjs",
+    "archive": "node logger/archive.mjs",
+    "status": "node logger/status.mjs",
+    "network": "node site/build_network.mjs",
+    "serve": "node site/build_network.mjs && node scripts/serve.mjs 8080",
+    "test": "node --test test/*.test.mjs"
+  },
+  "dependencies": {
+    "fflate": "^0.8.3",
+    "gtfs-realtime-bindings": "^2.2.0"
+  }
+}

@@ -1,0 +1,24 @@
+# Run the rule tests on every push and pull request. These tests guard every number the site publishes.
+name: Tests
+
+on:
+  push:
+    branches: [main]
+    paths-ignore: ['data/**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm test

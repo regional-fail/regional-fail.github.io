@@ -1,0 +1,40 @@
+# Every January 2: publish the previous year's full record as a GitHub Release (one citable download).
+# Runs on Jan 2 so the Dec 31 service day (which ends around 4am Jan 1) is archived first.
+name: Yearly data release
+
+on:
+  schedule:
+    - cron: '0 12 2 1 *'
+  workflow_dispatch:
+    inputs:
+      year:
+        description: 'Year to release (default: last year)'
+        required: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Bundle and publish
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          YEAR_INPUT: ${{ inputs.year }}
+        run: |
+          set -euo pipefail
+          YEAR="${YEAR_INPUT:-$(( $(date -u +%Y) - 1 ))}"
+          [[ "$YEAR" =~ ^[0-9]{4}$ ]] || { echo "bad year: $YEAR"; exit 1; }
+          mkdir -p dist
+          if [ ! -d "data/archive/$YEAR" ]; then echo "No archive for $YEAR; nothing to release."; exit 0; fi
+          tar -czf "dist/regional-fail-$YEAR-daily-records.tar.gz" "data/archive/$YEAR" data/archive/index.json
+          if git fetch --depth 1 origin "traces-$YEAR"; then
+            git worktree add "traces" FETCH_HEAD --detach
+            tar -czf "dist/regional-fail-$YEAR-map-traces.tar.gz" -C traces "$YEAR"
+          fi
+          DAYS="$(ls "data/archive/$YEAR"/*/*.json.gz | wc -l)"
+          gh release create "data-$YEAR" dist/* \
+            --title "Regional Fail data: $YEAR" \
+            --notes "Every SEPTA Regional Rail train we tracked in $YEAR: $DAYS daily records (gzipped JSON, one file per service day) plus map traces. Rules and timetable version are stored in each file. Source: SEPTA's public real-time feeds and published timetable."
