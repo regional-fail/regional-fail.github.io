@@ -3,43 +3,64 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Regional Fail · Traffic? lol. Delays? lmao.</title>
+  <title>Regional Fail · Traffic? LOL. Delays? LMAO.</title>
   <meta name="description" content="A sourced, tongue-in-cheek live map of SEPTA Regional Rail delays and canceled &quot;ghost&quot; trains.">
   <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@5.24.1/dist/maplibre-gl.css">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0d0d0d">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Regional Fail">
+  <meta property="og:title" content="Regional Fail · Traffic? LOL. Delays? LMAO.">
+  <meta property="og:description" content="Live map of SEPTA Regional Rail delays and canceled ghost trains, measured every 5 minutes.">
+  <meta property="og:url" content="https://regional-fail.github.io/">
+  <meta property="og:image" content="https://regional-fail.github.io/img/og-banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A ghost train numbered 404 next to the words Regional Fail: Traffic? LOL. Delays? LMAO.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <h1>Regional Fail</h1>
-      <p class="tagline">Traffic? lol. Delays? lmao.</p>
+      <p class="tagline">Traffic? LOL. Delays? LMAO.</p>
     </div>
     <div class="traffic" id="traffic" aria-live="polite">
       <span class="traffic-label">Current Regional Rail traffic</span>
       <span class="traffic-level" id="traffic-level">Loading…</span>
       <span class="traffic-detail" id="traffic-detail"></span>
     </div>
-    <nav class="nav"><a href="index.html" aria-current="page">Live map</a><a href="lines.html">Line scorecards</a><a href="#about">How we count</a></nav>
+    <nav class="nav"><a href="index.html" aria-current="page">🗺️ Live map</a><a href="lines.html">📋 Report cards</a><a href="#about">How we count</a></nav>
   </header>
 
-  <section class="tiles" aria-label="Today so far">
+  <nav class="linebar" aria-label="Pick a line">
+    <span class="linebar-label">Pick a line</span>
+    <div class="chips" id="line-chips" role="group"></div>
+  </nav>
+
+  <section class="tiles" aria-label="Numbers for the current selection">
     <div class="tile"><span class="tile-value" id="t-running">–</span><span class="tile-label">trains running now</span></div>
     <div class="tile"><span class="tile-value" id="t-ghosts">–</span><span class="tile-label">ghost trains today 👻</span></div>
-    <div class="tile"><span class="tile-value" id="t-ontime">–</span><span class="tile-label" id="t-ontime-label">on time today (SEPTA's own 5-min rule)</span></div>
-    <div class="tile"><span class="tile-value" id="t-avglate">–</span><span class="tile-label" id="t-avglate-label">avg minutes late at the last stop</span></div>
-    <div class="tile"><span class="tile-value" id="t-worst">–</span><span class="tile-label">worst delay today</span></div>
+    <div class="tile"><span class="tile-value" id="t-ontime">–</span><span class="tile-label" id="t-ontime-label">on time today</span></div>
+    <div class="tile"><span class="tile-value" id="t-avglate">–</span><span class="tile-label" id="t-avglate-label">avg minutes late</span></div>
   </section>
 
   <main class="layout">
     <div class="map-wrap">
       <div id="map" role="region" aria-label="Map of Regional Rail trains today"></div>
+      <div class="dir-toggle" role="group" aria-label="Direction">
+        <button type="button" class="seg" data-dir="" aria-pressed="true">Both ways</button>
+        <button type="button" class="seg" data-dir="in" aria-pressed="false">🏙️ Inbound</button>
+        <button type="button" class="seg" data-dir="out" aria-pressed="false">🌳 Outbound</button>
+      </div>
       <div class="legend" aria-label="Legend">
-        <div class="legend-title">Minutes late</div>
-        <div class="legend-row"><span class="dot" style="--c: var(--good); --s: 10px"></span>On time (0–5)</div>
-        <div class="legend-row"><span class="dot" style="--c: var(--warning); --s: 13px"></span>Late (6–15), labeled "+min"</div>
-        <div class="legend-row"><span class="dot" style="--c: var(--critical); --s: 16px"></span>Very late (16+), labeled "+min"</div>
-        <div class="legend-row"><span class="ghost-key">👻</span>Ghost train (canceled)</div>
-        <div class="legend-row"><span class="trail-key"></span>Finished trip (faded)</div>
+        <div class="legend-row"><span class="dot" style="--c: var(--good); --s: 10px"></span>On time</div>
+        <div class="legend-row"><span class="dot" style="--c: var(--warning); --s: 13px"></span>Late (6–15 min)</div>
+        <div class="legend-row"><span class="dot" style="--c: var(--critical); --s: 16px"></span>Very late (16+)</div>
+        <div class="legend-row"><span class="ghost-key">👻</span>Ghost train</div>
       </div>
       <div class="timebar">
         <button id="play" type="button" aria-label="Replay the day">▶</button>
@@ -50,31 +71,8 @@
       <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
     </div>
 
-    <aside class="side">
-      <section>
-        <h2>Ghost trains today 👻</h2>
-        <p class="side-note">Scheduled, never showed up. "Confirmed" means SEPTA said so; "inferred" means we watched and it never appeared.</p>
-        <ol id="ghost-list" class="list"></ol>
-      </section>
-      <section>
-        <h2>Latest right now</h2>
-        <ol id="late-list" class="list"></ol>
-      </section>
-      <p class="asof" id="asof"></p>
-    </aside>
+    <aside class="side" id="side" aria-live="polite"></aside>
   </main>
-
-  <section class="table-section">
-    <details id="table-details">
-      <summary>Every train today (table view)</summary>
-      <div class="table-wrap">
-        <table id="train-table">
-          <thead><tr><th>Train</th><th>Line(s)</th><th>Scheduled</th><th>Status</th><th>Late at last report</th><th>Worst</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </details>
-  </section>
 
   <footer id="about" class="about">
     <h2>How we count</h2>

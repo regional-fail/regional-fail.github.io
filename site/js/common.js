@@ -54,9 +54,33 @@ export function statusText(rec) {
   }
 }
 
+/** Direction language used everywhere: inbound is always left/first, outbound right/second. */
+export const DIRS = {
+  Inbound: { key: 'in', icon: '🏙️', label: 'Inbound', long: 'Into Center City' },
+  Outbound: { key: 'out', icon: '🌳', label: 'Outbound', long: 'Out to the suburbs' },
+};
+export const DIR_ORDER = ['Inbound', 'Outbound'];
+export const dirFromKey = k => DIR_ORDER.find(d => DIRS[d].key === k) || null;
+
+/** Grade colors reuse the status palette; the letter always travels with the color. */
+export const GRADES = {
+  A: { color: '#0ca30c', ink: '#ffffff', quip: 'Suspiciously competent.' },
+  B: { color: '#0ca30c', ink: '#ffffff', quip: 'Not bad. For SEPTA.' },
+  C: { color: '#fab219', ink: '#0b0b0b', quip: 'Mid. Very mid.' },
+  D: { color: '#d03b3b', ink: '#ffffff', quip: 'Bring a book.' },
+  F: { color: '#d03b3b', ink: '#ffffff', quip: 'Traffic? LOL.' },
+};
+
 export function lineNames(rec, network) {
   const names = Object.fromEntries(network.lines.map(l => [l.id, l.name]));
-  return rec.legs?.length ? rec.legs.map(l => `${names[l.route] || l.route} ${l.dir}`).join(' → ') : `${rec.tv_line || 'Unscheduled'} (not in timetable)`;
+  return rec.legs?.length ? rec.legs.map(l => `${names[l.route] || l.route} ${DIRS[l.dir]?.icon || ''} ${l.dir.toLowerCase()}`).join(' → ') : `${rec.tv_line || 'Unscheduled'} (not in timetable)`;
+}
+
+/** Grade sticker element: letter on its grade color. */
+export function gradeBadge(grade, size = '') {
+  if (!grade) return el('span', { class: `grade-badge none ${size}`, title: 'Not enough data yet' }, '–');
+  const g = GRADES[grade];
+  return el('span', { class: `grade-badge ${size}`, style: `--g:${g.color};--gi:${g.ink}`, title: `Grade ${grade}` }, grade);
 }
 
 export const stopName = (network, id) => network.stops[id]?.[0] || id;

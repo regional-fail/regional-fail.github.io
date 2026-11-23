@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Link-preview banner for Regional Fail (original art; no SEPTA logos or trademarks) -->
+  <defs>
+    <linearGradient id="fade" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f0efec"/>
+      <stop offset="1" stop-color="#f0efec" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="#0d0d0d"/>
+  <!-- faint map-like track lines -->
+  <g fill="none" stroke="#2c2c2a" stroke-width="6" stroke-linecap="round">
+    <path d="M-20 520 C200 470 330 500 470 430 S760 300 1220 330"/>
+    <path d="M-20 160 C160 220 300 260 470 430"/>
+    <path d="M470 430 C560 520 700 560 1220 590"/>
+  </g>
+  <!-- track under the ghost train -->
+  <g stroke="#5a5955" stroke-width="5" stroke-linecap="round">
+    <line x1="70" y1="548" x2="470" y2="548"/>
+    <line x1="95" y1="548" x2="80" y2="566"/><line x1="165" y1="548" x2="150" y2="566"/><line x1="235" y1="548" x2="220" y2="566"/>
+    <line x1="305" y1="548" x2="290" y2="566"/><line x1="375" y1="548" x2="360" y2="566"/><line x1="445" y1="548" x2="430" y2="566"/>
+  </g>
+  <!-- the ghost train, floating above the track -->
+  <g transform="translate(120 70)">
+    <ellipse cx="150" cy="462" rx="120" ry="14" fill="#000" opacity="0.5"/>
+    <path d="M30 420V170C30 85 85 30 150 30s120 55 120 140v250l-30-24-30 24-30-24-30 24-30-24-30 24-30-24-30 24z" fill="url(#fade)"/>
+    <rect x="62" y="95" width="176" height="92" rx="24" fill="#1a1a19"/>
+    <ellipse cx="112" cy="141" rx="21" ry="25" fill="#f0efec"/>
+    <ellipse cx="188" cy="141" rx="21" ry="25" fill="#f0efec"/>
+    <circle cx="118" cy="147" r="10" fill="#1a1a19"/>
+    <circle cx="194" cy="147" r="10" fill="#1a1a19"/>
+    <ellipse cx="150" cy="226" rx="13" ry="17" fill="#1a1a19"/>
+    <circle cx="76" cy="268" r="17" fill="#fab219"/>
+    <circle cx="224" cy="268" r="17" fill="#fab219"/>
+    <rect x="108" y="290" width="84" height="42" rx="8" fill="#1a1a19"/>
+    <text x="150" y="321" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="28" font-weight="700" fill="#fab219">404</text>
+  </g>
+  <!-- words -->
+  <g font-family="'Segoe UI', system-ui, Arial, sans-serif">
+    <text x="540" y="205" font-size="92" font-weight="800" fill="#f0efec" letter-spacing="-3">Regional Fail</text>
+    <text x="544" y="270" font-size="40" font-weight="600" fill="#c3c2b7">Traffic? LOL. Delays? LMAO.</text>
+    <!-- mock departure board -->
+    <rect x="540" y="320" width="600" height="186" rx="16" fill="#1a1a19" stroke="#2c2c2a" stroke-width="2"/>
+    <g font-family="Consolas, 'Courier New', monospace" font-size="30" font-weight="700">
+      <circle cx="598" cy="377" r="11" fill="#0ca30c"/>
+      <text x="624" y="387" fill="#f0efec">#1234</text><text x="760" y="387" fill="#c3c2b7">ON TIME</text><text x="1000" y="387" fill="#898781">(rare)</text>
+      <circle cx="598" cy="427" r="13" fill="#d03b3b"/>
+      <text x="624" y="437" fill="#f0efec">#5678</text><text x="760" y="437" fill="#c3c2b7">+21 MIN</text>
+      <path d="M586 492v-16c0-8 5-13 12-13s12 5 12 13v16l-3-3-3 3-3-3-3 3-3-3-3 3-3-3z" fill="#f0efec"/>
+      <circle cx="594" cy="477" r="2" fill="#1a1a19"/><circle cx="602" cy="477" r="2" fill="#1a1a19"/>
+      <text x="624" y="487" fill="#f0efec">#404</text><text x="760" y="487" fill="#d03b3b">TRAIN NOT FOUND</text>
+    </g>
+    <text x="544" y="570" font-size="24" fill="#898781">Live SEPTA Regional Rail delays &amp; ghost trains</text>
+  </g>
+</svg>

@@ -1,6 +1,6 @@
 # Regional Fail: project plan
 
-> **Traffic? lol. Delays? lmao.**
+> **Traffic? LOL. Delays? LMAO.**
 > A tongue-in-cheek, fully sourced dashboard of SEPTA Regional Rail's reliability.
 > Framing: **starved & mismanaged.** Every claim is sourced or measured by us. See [research/FINDINGS.md](research/FINDINGS.md).
 

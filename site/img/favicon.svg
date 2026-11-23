@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Regional Fail icon: a ghost train (original art, not SEPTA branding) -->
+  <rect width="64" height="64" rx="14" fill="#1a1a19"/>
+  <path d="M12 56V27C12 15 21 7 32 7s20 8 20 20v29l-5-4-5 4-5-4-5 4-5-4-5 4-5-4z" fill="#f0efec"/>
+  <rect x="17" y="17" width="30" height="15" rx="5" fill="#1a1a19"/>
+  <ellipse cx="26" cy="24.5" rx="3.6" ry="4.2" fill="#f0efec"/>
+  <ellipse cx="38" cy="24.5" rx="3.6" ry="4.2" fill="#f0efec"/>
+  <circle cx="27" cy="25.5" r="1.8" fill="#1a1a19"/>
+  <circle cx="39" cy="25.5" r="1.8" fill="#1a1a19"/>
+  <circle cx="21" cy="41" r="3.2" fill="#fab219"/>
+  <circle cx="43" cy="41" r="3.2" fill="#fab219"/>
+</svg>

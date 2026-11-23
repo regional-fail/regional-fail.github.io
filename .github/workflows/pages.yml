@@ -34,7 +34,7 @@ jobs:
           node site/build_network.mjs
           mkdir -p _site
           cp -r site/. _site/
-          rm -f _site/build_network.mjs
+          rm -f _site/build_network.mjs _site/build_images.mjs
           mkdir -p _site/lib
           cp logger/lib/summary.mjs logger/lib/classify.mjs logger/lib/rules.mjs logger/lib/geo.mjs _site/lib/
           touch _site/.nojekyll

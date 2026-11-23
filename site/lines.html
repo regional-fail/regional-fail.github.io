@@ -3,72 +3,71 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Line scorecards · Regional Fail</title>
+  <title>Report cards · Regional Fail</title>
   <meta name="description" content="Which SEPTA Regional Rail line is the most reliably unreliable, and which one actually does its job.">
+  <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+  <meta name="theme-color" content="#0d0d0d">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Regional Fail">
+  <meta property="og:title" content="Regional Fail · Line report cards">
+  <meta property="og:description" content="Which SEPTA Regional Rail line is the most reliably unreliable, and which one actually does its job.">
+  <meta property="og:url" content="https://regional-fail.github.io/lines.html">
+  <meta property="og:image" content="https://regional-fail.github.io/img/og-banner.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="A ghost train numbered 404 next to the words Regional Fail: Traffic? LOL. Delays? LMAO.">
+  <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
       <h1>Regional Fail</h1>
-      <p class="tagline">Traffic? lol. Delays? lmao.</p>
+      <p class="tagline">Traffic? LOL. Delays? LMAO.</p>
     </div>
-    <nav class="nav"><a href="index.html">Live map</a><a href="lines.html" aria-current="page">Line scorecards</a><a href="#about">How we score</a></nav>
+    <nav class="nav"><a href="index.html">🗺️ Live map</a><a href="lines.html" aria-current="page">📋 Report cards</a><a href="#about">How we grade</a></nav>
   </header>
 
-  <div class="filters" role="group" aria-label="Time period">
-    <button type="button" class="seg" data-period="today" aria-pressed="true">Today</button>
-    <button type="button" class="seg" data-period="7d" aria-pressed="false">Last 7 days</button>
-    <button type="button" class="seg" data-period="30d" aria-pressed="false">Last 30 days</button>
+  <div class="filters">
+    <div class="segs" role="group" aria-label="Time period">
+      <button type="button" class="seg" data-period="today" aria-pressed="true">Today</button>
+      <button type="button" class="seg" data-period="7d" aria-pressed="false">7 days</button>
+      <button type="button" class="seg" data-period="30d" aria-pressed="false">30 days</button>
+    </div>
+    <div class="segs" role="group" aria-label="Sort">
+      <button type="button" class="seg sort" data-sort="worst" aria-pressed="true">😬 Worst first</button>
+      <button type="button" class="seg sort" data-sort="best" aria-pressed="false">😌 Best first</button>
+      <button type="button" class="seg sort" data-sort="az" aria-pressed="false">A–Z</button>
+    </div>
     <span class="filter-note" id="period-note"></span>
   </div>
 
   <section class="awards" aria-label="Awards">
-    <article class="award worst">
+    <a class="award worst" id="worst-card">
       <div class="award-kicker">🏆 Most Reliably Unreliable</div>
-      <div class="award-name" id="worst-name">–</div>
-      <div class="award-grade" id="worst-grade"></div>
+      <div class="award-main"><span class="award-name" id="worst-name">–</span><span id="worst-grade"></span></div>
       <p class="award-detail" id="worst-detail"></p>
-    </article>
-    <article class="award best">
+    </a>
+    <a class="award best" id="best-card">
       <div class="award-kicker">🎖️ Actually Does Its Job</div>
-      <div class="award-name" id="best-name">–</div>
-      <div class="award-grade" id="best-grade"></div>
+      <div class="award-main"><span class="award-name" id="best-name">–</span><span id="best-grade"></span></div>
       <p class="award-detail" id="best-detail"></p>
-    </article>
+    </a>
   </section>
 
-  <section class="card">
-    <h2>Reliability score by line, worst first</h2>
-    <p class="card-note">0–100, both directions combined. Hover a bar for the breakdown. Lines without enough observed trips are listed separately and aren't ranked.</p>
-    <div id="bars" class="bars" role="list"></div>
-    <div id="unranked" class="unranked"></div>
-    <div id="bar-tip" class="tooltip" role="tooltip" hidden></div>
-  </section>
-
-  <section class="card">
-    <h2>By line and direction</h2>
-    <div class="table-wrap tall">
-      <table id="dir-table">
-        <thead><tr>
-          <th>Line</th><th>Direction</th><th>Trips due</th><th>Ran</th><th>Ghosts 👻</th><th>Unknown</th>
-          <th>On time</th><th>Avg late</th><th>Worst</th><th>Rush-hour on time</th><th>Grade</th>
-        </tr></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-  </section>
+  <section class="cards" id="cards" aria-label="Report card for each line"></section>
 
   <footer id="about" class="about">
-    <h2>How we score</h2>
-    <p>Each line gets a 0–100 score over the chosen period. Rush-hour trains count double (inbound arriving 6:00–9:30am, outbound leaving 4:00–7:00pm, weekdays):</p>
+    <h2>How we grade</h2>
+    <p>Each line, and each direction, gets a 0–100 score for the chosen period. Rush-hour trains count double (inbound arriving 6:00–9:30am, outbound leaving 4:00–7:00pm, weekdays):</p>
     <ul>
       <li><strong>50%:</strong> share of scheduled trains that actually ran. A ghost train is a total failure.</li>
       <li><strong>30%:</strong> share of finished trips on time, by SEPTA's own rule (5 minutes late or less at the last stop).</li>
       <li><strong>20%:</strong> how late trips ran on average, capped at 15 minutes.</li>
     </ul>
     <p>Grades: A 90+, B 80+, C 70+, D 60+, F below 60. A line is ranked only with enough observed trips in the period (<span id="min-rank"></span>). Trains we couldn't observe are "unknown" and never counted against SEPTA. Through trains that cross Center City count toward each line they run on.</p>
-    <p>Data: SEPTA's public real-time feeds and published timetable.</p>
     <p class="fine-print">Schedule data: SEPTA GTFS, used under SEPTA&rsquo;s Trip Planning Data License Agreement. Real-time data: SEPTA&rsquo;s public feeds. All numbers are our own calculations from that data, provided as is. Regional Fail is an independent, non-commercial project and is not affiliated with or endorsed by SEPTA. No SEPTA logos or trademarks are used.</p>
   </footer>
 

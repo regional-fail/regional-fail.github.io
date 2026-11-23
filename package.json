@@ -2,7 +2,7 @@
   "name": "regional-fail",
   "version": "0.1.0",
   "private": true,
-  "description": "Traffic? lol. Delays? lmao. A sourced, tongue-in-cheek dashboard of SEPTA Regional Rail reliability.",
+  "description": "Traffic? LOL. Delays? LMAO. A sourced, tongue-in-cheek dashboard of SEPTA Regional Rail reliability.",
   "type": "module",
   "engines": {
     "node": ">=20"
@@ -14,11 +14,15 @@
     "archive": "node logger/archive.mjs",
     "status": "node logger/status.mjs",
     "network": "node site/build_network.mjs",
+    "images": "node site/build_images.mjs",
     "serve": "node site/build_network.mjs && node scripts/serve.mjs 8080",
     "test": "node --test test/*.test.mjs"
   },
   "dependencies": {
     "fflate": "^0.8.3",
     "gtfs-realtime-bindings": "^2.2.0"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2"
   }
 }
